@@ -41,11 +41,12 @@ class PipingController extends AbstractController
     public function createAction()
     {
         $this->language->load('template.common');
-        $this->language->load('productlist.create');
-        $this->language->load('productlist.labels');
+        $this->language->load('piping.create');
+        $this->language->load('piping.labels');
         $this->language->load('productlist.messages');
         $this->language->load('productlist.units');
         $this->language->load('validation.errors');
+        $this->_data['additionalHeaderCss'] = '';
 
         $this->_data['categories'] = ProductCategoryModel::getAll();
 

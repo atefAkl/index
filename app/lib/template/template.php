@@ -94,6 +94,7 @@ class Template
                     $output .= "\t".'<link type="text/css" rel="stylesheet" href="' . $path . '" />'."\n";
                 }
             }
+
             if (isset($additionalHeaderCss)) {
                 $output .= "\t".$additionalHeaderCss."\n";
             }

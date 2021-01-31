@@ -7,3 +7,4 @@ $_['text_nav_about'] = 'About Us';
 $_['text_nav_products'] = 'Piping Products';
 $_['text_nav_projects'] = 'piping Projects';
 $_['text_nav_inquiry'] = 'Register Inquiry';
+$_['text_qlinks_header'] = 'Piping Products Quick Links';

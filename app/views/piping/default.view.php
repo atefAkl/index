@@ -14,7 +14,18 @@
     </div>
     <div class="col col-lg-12 contents">
         <ul id="contentsSections" class="cont">
-            <li class="homePageContents">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error minus incidunt deserunt, quod dignissimos consectetur placeat. A harum, natus tempore temporibus sit nemo explicabo, corporis omnis unde est architecto velit. </li>
+            <li class="homePageContents">
+                <div class="content">
+                    <div class="contentBody col-lg-10">
+
+                    </div> <!--Content Body-->
+                    <div class="qLinks col-lg-2">
+                        <div class="qlHeader">
+                            <?= $text_qlinks_header ?>
+                        </div>
+                    </div>
+                </div>
+            </li>
             <li class="aboutPipingContents">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore sint harum dolores. Ratione nostrum nobis at tempore repellat consequatur impedit, voluptates fuga, quidem sed voluptate perspiciatis esse qui mollitia. Minus, aperiam. Cupiditate, eaque. Adipisci non nostrum quam consequuntur eos nobis, atque cupiditate libero, dolores voluptas culpa eveniet, enim inventore perspiciatis.</li>
             <li class="productsContents">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatibus et recusandae ea!</li>
             <li class="projectsContents">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae necessitatibus, qui vel temporibus, facilis assumenda voluptate perspiciatis, eveniet reiciendis veniam vitae? Repudiandae rerum enim placeat natus, quos numquam voluptas odio delectus sequi molestiae ratione veritatis a fuga obcaecati, deserunt saepe autem vero doloremque praesentium itaque incidunt nemo. Accusantium, reprehenderit. Non inventore, autem voluptates maxime excepturi quia amet minima numquam, ad assumenda, incidunt repellat alias deleniti sequi molestias repudiandae! Quisquam earum in eaque maiores aliquam sed temporibus. Fuga id soluta molestiae nostrum natus dicta dolorem quam maxime quia! Excepturi, quam cum aperiam tempore cumque qui explicabo facilis suscipit molestias. Ab, illo!</li>

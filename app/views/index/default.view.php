@@ -1,85 +1,91 @@
 
 <div class="cont">
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
-        <!-- Indicators -->
+
+    <!--Carousel start Section-->
+    <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
         <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-            <li data-target="#myCarousel" data-slide-to="3"></li>
-            <li data-target="#myCarousel" data-slide-to="4"></li>
-            <li data-target="#myCarousel" data-slide-to="5"></li>
-            <li data-target="#myCarousel" data-slide-to="6"></li>
+            <li data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"></li>
+            <li data-bs-target="#carouselExampleDark" data-bs-slide-to="1"></li>
+            <li data-bs-target="#carouselExampleDark" data-bs-slide-to="2"></li>
+            <li data-bs-target="#carouselExampleDark" data-bs-slide-to="3"></li>
+            <li data-bs-target="#carouselExampleDark" data-bs-slide-to="4"></li>
+            <li data-bs-target="#carouselExampleDark" data-bs-slide-to="5"></li>
+            <li data-bs-target="#carouselExampleDark" data-bs-slide-to="6"></li>
         </ol>
-
-        <!-- Wrapper for slides -->
         <div class="carousel-inner">
-            <div class="item active">
-                <h2 class="title textXL">
-                    <?= $text_caption_1 ?>
-                </h2>
-                <img src="/img/img1.jpg" alt="Los Angeles">
-                <p class="caption">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio est illo inventore ipsam maiores recusandae tenetur vitae! Quod.</p>
+            <div class="item carousel-item active" data-bs-interval="5000">
+                <img src="/img/img1.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption">
+                    <h2 class="title textXL"><?= $text_caption_1 ?></h2>
+                    <p class="caption">Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                </div>
             </div>
-
-            <div class="item">
-                <h2 class="title textXL">
-                    <?= $text_caption_2 ?>
-                </h2>
-                <img src="/img/img2.jpg" alt="Chicago">
-                <p class="caption">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio est illo inventore ipsam maiores recusandae tenetur vitae! Quod.</p>
+            <div class="item carousel-item" data-bs-interval="5000">
+                <img src="/img/img2.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption">
+                    <h2 class="title textXL">
+                        <?= $text_caption_2 ?>
+                    </h2>
+                    <p class="caption">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
             </div>
-
-            <div class="item">
-                <h2 class="title textXL">
-                   <?= $text_caption_3?>
-                </h2>
-                <img src="/img/img3.jpg" alt="New york" style="width:100%;">
-                <p class="caption">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio est illo inventore ipsam maiores recusandae tenetur vitae! Quod.</p>
+            <div class="item carousel-item"  data-bs-interval="5000">
+                <img src="/img/img3.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption">
+                    <h2 class="title textXL">
+                        <?= $text_caption_3 ?>
+                    </h2>
+                    <p class="caption">Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                </div>
             </div>
-
-            <div class="item">
-                <h2 class="title textXL">
-                    <?= $text_caption_4?>
-                </h2>
-                <p class="caption">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio est illo inventore ipsam maiores recusandae tenetur vitae! Quod.</p>
-                <img src="/img/img4.jpg" alt="New york" style="width:100%;">
+            <div class="item carousel-item"  data-bs-interval="5000">
+                <img src="/img/img4.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption">
+                    <h2 class="title textXL">
+                        <?= $text_caption_4 ?>
+                    </h2>
+                    <p class="caption">Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                </div>
             </div>
-
-            <div class="item">
-                <h2 class="title textXL">
-                    <?= $text_caption_5 ?>
-                </h2>
-                <img src="/img/img5.jpg" alt="New york" style="width:100%;"><p class="caption">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio est illo inventore ipsam maiores recusandae tenetur vitae! Quod.</p>
+            <div class="item carousel-item"  data-bs-interval="5000">
+                <img src="/img/img5.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption">
+                    <h2 class="title textXL">
+                        <?= $text_caption_5 ?>
+                    </h2>
+                    <p class="caption">Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                </div>
             </div>
-
-            <div class="item">
-                <h2 class="title textXL">
-                    <?= $text_caption_6 ?>
-                </h2>
-                <img src="/img/img6.jpg" alt="New york" style="width:100%;">
-                <p class="caption">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio est illo inventore ipsam maiores recusandae tenetur vitae! Quod.</p>
+            <div class="item carousel-item"  data-bs-interval="5000">
+                <img src="/img/img6.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption">
+                    <h2 class="title textXL">
+                        <?= $text_caption_6 ?>
+                    </h2>
+                    <p class="caption">Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                </div>
             </div>
-
-            <div class="item">
-                <h2 class="title textXL">
-                   <?= $text_caption_7 ?>
-                </h2>
-                <img src="/img/img7.jpg" alt="New york" style="width:100%;">
-                <p class="caption">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio est illo inventore ipsam maiores recusandae tenetur vitae! Quod.</p>
+            <div class="item carousel-item" data-bs-interval="5000">
+                <img src="/img/img7.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption">
+                    <h2 class="title textXL">
+                        <?= $text_caption_7 ?>
+                    </h2>
+                    <p class="caption">Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                </div>
             </div>
         </div>
-
-        <!-- Left and right controls -->
-        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-            <i class="fa fa-angle-double-left"></i>
-            <span class="sr-only">Previous</span>
+        <a class="left carousel-control-prev" href="#carouselExampleDark" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
         </a>
-        <a class="right carousel-control" href="#myCarousel" data-slide="next">
-            <i class="fa fa-angle-double-right"></i>
-            <span class="sr-only">Next</span>
+        <a class="right carousel-control-next" href="#carouselExampleDark" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
         </a>
     </div>
+    <!--Carousel End Section-->
+
 </div>
 
 <nav id="navbar">

@@ -2,12 +2,7 @@
     <?php if (isset($this->session->u->Username)) { ?>
     <a href="javascript:;" data-menu-status="<?= (isset($_COOKIE['menu_opened']) && $_COOKIE['menu_opened'] == 'true') ? 'true' : 'false' ?>" class="menu_switch <?= (isset($_COOKIE['menu_opened']) && $_COOKIE['menu_opened'] == 'true') ? 'opened no_animation' : '' ?>"><i class="fa fa-bars"></i></a>
     <?php } ?>
-    <h1>
-            <?/*= $text_dashboard */?><!--
-        <?php /*if (isset($title)): */?>
-            <?/*= ' > ' . $title */?>
-        --><?php /*endif; */?>
-    </h1>
+
     <div class="user_menu_container">
         <a href="javascript:;" class="language_switch user">
             <span><?= $text_welcome ?> <?= isset($this->session->u->Username) ? $this->session->u->Username : $text_visitor?></span>

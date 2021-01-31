@@ -21,7 +21,7 @@
     cursor: pointer;
     display: inline-block;
     padding: 8px 16px;
-    margin-top: 16px;
+    margin-top: 14px;
     background: #afafaf
 
 }
@@ -34,7 +34,6 @@
 
 .hTaps .contents {
     border-top: 2px solid #afafaf;
-    padding: 16px;
 }
 
 .hTaps .contents ul li {
@@ -42,4 +41,24 @@
 }
 .hTaps .contents ul li:first-child {
     display: block;
+}
+.contents .content {
+    display: flex;
+}
+.contents .content .contentBody {
+    border-left: 1px solid #A7A7A7;
+}
+
+.qLinks {
+    background-color: #a7a7a7;
+}
+
+.qLinks .qlHeader {
+    border: 2px solid #a7a7a7;
+    border-top: 0;
+    color: #fff;
+    background-color: #444;
+    padding: 8px 16px;
+    text-align: center;
+    font-weight: bold
 }
