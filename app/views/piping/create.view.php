@@ -1,34 +1,47 @@
 <div style="height: 80px;"></div>
-<form autocomplete="off" class="appForm clearfix" method="post" enctype="application/x-www-form-urlencoded">
+
+<?php if (isset($_POST)) {
+    var_dump($_POST);
+    var_dump($_FILES);
+} ?>
+<form autocomplete="off" class="appForm clearfix" method="post" enctype="application/x-www-form-urlencoded" style="width: 50%; min-width: 500px">
     <fieldset>
-        <legend><?= $text_legend ?></legend>
+        <legend><b><?= $text_legend ?></b></legend>
 
-        <div class="input_wrapper n20 border">
-            <label<?= $this->labelFloat('productName') ?>><?= $text_label_Name ?></label>
-            <input required type="text" name="productName" maxlength="100" value="<?= $this->showValue('productName') ?>">
+        <div class="input_wrapper_other n50 border padding">
+            <label class="block">
+                <b><?= $text_label_Name ?></b>
+            </label>
+            <input required type="text" name="ProductName" maxlength="100"/>
         </div>
-
-        <div class="input_wrapper_other n20 border padding">
-            <label><?= $text_label_outerDia ?></label>
+        <div class="input_wrapper_other n50 border padding">
+            <label class="block">
+                <b><?= $text_label_outerDia ?></b>
+            </label>
             <input required type="text" name="outerDiaFrom" class="border block" placeholder="<?= $text_ph_from ?>">
             <input required type="text" name="outerDiaTo" class="border block" placeholder="<?= $text_ph_to ?>">
         </div>
 
-        <div class="input_wrapper_other n20 border padding">
-            <label class="noFloat block"><?= $text_label_wallThk ?></label>
+        <div class="input_wrapper_other border block padding">
+            <label><b><?= $text_label_desc?></b></label>
+            <textarea required  name="ProductDesc" class="border" placeholder="<?= $text_ph_from ?>">
+            </textarea>
+        </div>
+
+        <div class="input_wrapper_other n50 border padding">
+            <label class="noFloat block"><b><?= $text_label_wallThk ?></b></label>
             <input required type="text" class="border block" name="wallThkFrom" placeholder="<?= $text_ph_from ?>">
             <input required type="text" class="border block" name="wallThkTo"  placeholder="<?= $text_ph_to ?>">
         </div>
 
-        <div class="input_wrapper_other n20 border padding">
-            <label class="noFloat block"><?= $text_label_length ?></label>
+        <div class="input_wrapper_other n50 border padding">
+            <label class="noFloat block"><b><?= $text_label_length ?></b></label>
             <input required type="text" class="border block" name="lengthFrom" placeholder="<?= $text_ph_from ?>">
             <input required type="text" class="border block" name="lengthTo"  placeholder="<?= $text_ph_to ?>">
         </div>
 
-
-        <div class="input_wrapper_other n50 border padding">
-            <label<?= $this->labelFloat('productCat') ?>><?= $text_label_catName ?></label>
+        <div class="input_wrapper_other border n30 padding select">
+            <label class="noFloat block"><b><?= $text_label_catName ?></b></label>
             <?php
             $ProductCats = [
                 'Welded Pipes' => [
@@ -46,26 +59,35 @@
                 'Pipes Fittings And Flanges' => [
                     'Pipe Flanges', 'Pipe Cap', 'Pipe Tee', 'Pipe Reducer', 'Pipe Elbow', 'Pipe Bend'
                 ]
-            ];
+            ]; ?>
+            <select name="ProductCat">
+            <?php
             if ($ProductCats !== false): foreach ($ProductCats as $ProductCat => $cat): ?>
-                <h4><?= $ProductCat ?></h4>
-                <?php foreach ($ProductCats[$ProductCat] as $key => $val): ?>
-                    <label class="radio">
-                        <input type="radio" name="productCats[]" id="cat">
-                        <div class="radio_button"></div>
-                        <span><?= $val ?></span>
-                    </label>
+                <option value="" disabled><?= $ProductCat ?></option>
+                <?php foreach ($cat as $key => $val): ?>
+                <option value="<?= $ProductCat .'|' . $val?>"><?= $val ?></option>
                 <?php endforeach; endforeach; endif; ?>
+            </select>
         </div>
 
-        <div class="input_wrapper_other n50 border padding">
-            <label><?= $text_label_desc?></label>
-            <textarea required  name="productDesc" class="border" placeholder="<?= $text_ph_from ?>">
-            </textarea>
+        <div class="input_wrapper_other clearfix n70 padding border">
+            <label><b><?= $text_label_surface ?></b></label>
+
+            <?php
+            $surfaces = [
+                'Fusion bond Epoxy coating', 'Coal Tar Epoxy', '3PE', 'Vanish Coating', 'Bitumen Coating', 'Black Oil coating as per customer’s requirement'
+            ];
+            if ($surfaces !== false): foreach ($surfaces as $surface): ?>
+                <label class="checkbox">
+                    <input type="checkbox" name="surface[]" id="surface" value="<?= $surface ?>">
+                    <div class="checkbox_button"></div>
+                    <span><?= $surface ?></span>
+                </label>
+            <?php endforeach; endif; ?>
         </div>
 
-        <div class="input_wrapper_other">
-            <label><?= $text_label_standards ?></label>
+        <div class="input_wrapper_other n50 padding border">
+            <label><b><?= $text_label_standards ?></b></label>
 
             <?php
             $standards = [
@@ -73,15 +95,15 @@
             ];
             if ($standards !== false): foreach ($standards as $standard): ?>
                 <label class="checkbox">
-                    <input type="checkbox" name="privileges[]" id="privileges">
+                    <input type="checkbox" name="ProductStandards[]" id="ProductStandards" value="<?= $standard ?>">
                     <div class="checkbox_button"></div>
                     <span><?= $standard ?></span>
                 </label>
             <?php endforeach; endif; ?>
         </div>
 
-        <div class="input_wrapper_other">
-            <label><?= $text_label_certificates ?></label>
+        <div class="input_wrapper_other n50 padding border">
+            <label><b><?= $text_label_certificates ?></b></label>
 
             <?php
             $certificates = [
@@ -89,66 +111,90 @@
             ];
             if ($certificates !== false): foreach ($certificates as $certificate): ?>
                 <label class="checkbox">
-                    <input type="checkbox" name="certificates[]" id="certificates">
+                    <input type="checkbox" name="certificates[]" id="certificates" value="<?= $certificate ?>">
                     <div class="checkbox_button"></div>
                     <span><?= $certificate ?></span>
                 </label>
             <?php endforeach; endif; ?>
         </div>
 
-<div class="input_wrapper_other">
-            <label><?= $text_label_surface ?></label>
+        <div class="input_wrapper_other n40 padding" style="border-left: 1px solid #d4d4d4;">
+            <label><b><?= $text_label_apply ?></b></label>
 
             <?php
-            $surface = [
-                'Fusion bond Epoxy coating', 'Coal Tar Epoxy', '3PE', 'Vanish Coating', 'Bitumen Coating', 'Black Oil coating as per customer’s requirement'
-            ];
-            if ($certificates !== false): foreach ($certificates as $certificate): ?>
+            $applications = [
+                'water supply', 'drainage. For gas transportation: gas', 'steam',
+                'liquefied petroleum gas.', 'For structural purposes: as piling pipe',
+                'for bridges; piers', 'roads', 'buildings and other structures tube'];
+            if ($applications !== false): foreach ($applications as $apply): ?>
                 <label class="checkbox">
-                    <input type="checkbox" name="certificates[]" id="certificates">
+                    <input type="checkbox" name="applications[]" id="applications" value="<?= $apply ?>">
                     <div class="checkbox_button"></div>
-                    <span><?= $certificate ?></span>
+                    <span><?= $apply ?></span>
                 </label>
             <?php endforeach; endif; ?>
         </div>
 
+        <div class="input_wrapper_other n60 padding" style="border-bottom: 0;">
+            <label><b><?= $text_label_testing ?></b></label>
 
-        <div class="input_wrapper_other n20 border padding">
-            <label class="noFloat block"><?= $text_label_surface ?></label>
-            <input required type="text" class="border block" name="surface" placeholder="<?= $text_ph_from ?>">
+            <?php
+            $testing = [
+                'Chemical Component Analysis',
+                'Mechanical Properties (Ultimate tensile strength',
+                'Yield strength', 'Elongation)', 'Technical Properties (Flattening Test',
+                'Bending Test', 'Blow Test', 'Impact Test', 'Exterior Size Inspection',
+                'Hydrostatic Test', 'X-ray Test'];
+            if ($testing !== false): foreach ($testing as $test): ?>
+            <label class="checkbox">
+                <input type="checkbox" name="ProductTesting[]" id="ProductTesting" value="<?= $test ?>">
+                <div class="checkbox_button"></div>
+                <span><?= $test ?></span>
+            </label>
+            <?php endforeach; endif; ?>
         </div>
 
-        <div class="input_wrapper_other">
-            <label><?= $text_label_steel_grades ?></label>
+        <div class="input_wrapper_other border padding">
+            <label><b><?= $text_label_steel_grades ?></b></label>
 
             <?php
             $steel_grades = [
-                'API 5L' => ['GR A','GR B','X42','X46','X56', 'X60', 'X65', 'X70'],
-                'ASTM A252' => ['GR 1','GR 2','GR 3'],
-                'ASTM 53' => ['GR A','GR B','GR C', 'GR D'],
-                'EN' => ['S275', 'S275JR', 'S355JRH', 'S355JRH'],
-                'BS 4360' => ['Grade 43', 'Grade 50'],
-                'ASME' => []
+                'API_5L'        => ['GR A','GR B','X42','X46','X56', 'X60', 'X65', 'X70'],
+                'ASTM_A252'     => ['GR 1','GR 2','GR 3'],
+                'ASTM_53'       => ['GR A','GR B','GR C', 'GR D'],
+                'EN'            => ['S275', 'S275JR', 'S355JRH', 'S355JRH'],
+                'BS_4360'       => ['Grade 43', 'Grade 50'],
+                'ASME'          => ['ASME']
             ];
             if ($steel_grades !== false): foreach ($steel_grades as $steel_grade => $grades): ?>
-                <h4><?= $steel_grade ?></h4>
-                <?php foreach ($steel_grades[$steel_grade] as $key => $val): ?>
+                <h4><b><?= $steel_grade ?></b></h4>
+                <?php foreach ($grades as $key => $value): ?>
                     <label class="checkbox">
-                        <input type="checkbox" name="steelGrades[]" id="grades">
+                        <input type="checkbox" cols="40" name="steelGrades[]" id="grades" value="<?= $steel_grade . '|' . $value ?>">
                         <div class="checkbox_button"></div>
-                        <span><?= $val ?></span>
+                        <span><?= $value ?></span>
                     </label>
             <?php endforeach; endforeach; endif; ?>
         </div>
-
-        <div class="input_wrapper_other padding n40 select">
-            <select required name="GroupId">
-                <!--<option value=""><?/*= $text_user_GroupId */?></option>-->
-                <?php /*if (false !== $groups): foreach ($groups as $group): */?>
-                    <!--<option value="<?/*= $group->GroupId */?>"><?/*= $group->GroupName */?></option>-->
-                <?php /*endforeach;endif; */?>
-            </select>
+        <div class="input_wrapper n100">
+            <label class="floated"><?= $text_label_imgs ?></label>
+            <input type="file" name="pImages" accept="image/*" id="pImages" multiple>
         </div>
+        <div class="input_wrapper n100">
+            <label class="floated"><?= $text_label_datasheet ?></label>
+            <input type="file" name="datasheet" accept="application/pdf">
+        </div>
+
+
         <input class="block" type="submit" name="submit" value="<?= $text_label_save ?>">
+
+
     </fieldset>
+
+
 </form>
+<script>
+    $('#pImages').on('change', function () {
+        console.log($('this').files);
+    })
+</script>

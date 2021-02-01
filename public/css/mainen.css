@@ -1031,6 +1031,21 @@ div.wrapper div.action_view form.appForm fieldset legend {
     line-height: 1.5;
 }
 
+hr {
+    width: 90%;
+    margin: 0 !important;
+    display: block;
+    height: 0;
+    box-sizing: border-box;
+    border-bottom: 3px double #7a7a7a;
+}
+
+
+select option[disabled] {
+    background-color: #408eba;
+    color: #f7f7f7
+}
+
 div.wrapper div.action_view form.appForm.n10 {
     width: 10%;
 }
@@ -1169,9 +1184,11 @@ div.wrapper div.action_view form.appForm div.input_wrapper_other.border {
 
 div.wrapper div.action_view form.appForm div.input_wrapper_other label.radio,
 div.wrapper div.action_view form.appForm div.input_wrapper_other label.checkbox {
-    margin-right: 10px;
-    height: 20px;
     display: inline-block;
+    background-color: #75d0b2;
+    vertical-align: middle;
+    margin: 3px auto 0;
+    padding: 4px 12px;
     line-height: 1.5;
     font-size: 0.85em;
 }

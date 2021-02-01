@@ -17,11 +17,12 @@ return [
             'main'              => CSS . 'main' . $_SESSION['lang'] . '.css'
         ],
         'js' => [
-            'modernizr'         => JS . 'vendor/modernizr-2.8.3.min.js'
+            'modernizr'         => JS . 'vendor/modernizr-2.8.3.min.js',
+            'jquery'            => 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'
         ]
     ],
     'footer_resources' => [
-        'jquery'                => 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js',
+        
         'bootstrap_bundle'      => 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js',
         'bootstrap_proper'      => 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js',
         'bootstrap'             => 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js',

@@ -7,7 +7,7 @@ use PHPMVC\lib\messenger;
 use PHPMVC\Lib\Validate;
 use PHPMVC\Models\PrivilegeModel;
 use PHPMVC\Models\ProductCategoryModel;
-use PHPMVC\Models\ProductModel;
+use PHPMVC\Models\PipingModel;
 use PHPMVC\Models\UserGroupModel;
 use PHPMVC\Models\UserGroupPrivilegeModel;
 
@@ -20,12 +20,18 @@ class PipingController extends AbstractController
 
     private $_createActionRoles =
     [
-        'PipingId'      => 'req|num',
-        'Name'          => 'req|alphanum|between(3,50)',
-        'specs'         => 'req|num',
-        'BuyPrice'      => 'req|num',
-        'SellPrice'     => 'req|num',
-        'Unit'          => 'req|num'
+        'ProductName'           => 'req|alphanum|between(3,100)',
+        'productImages'         => 'req|alphanum',
+        'ProductDesc'           => 'req|alphanum',
+        'ProductCat'            => 'req|alphanum',
+        'ProductOuterDia'       => 'req|alphanum',
+        'ProductLength'         => 'req|alphanum',
+        'ProductWallThk'        => 'req|alphanum',
+        'ProductSurface'        => 'req|alphanum',
+        'ProductCertificates'   => 'req|alphanum',
+        'ProductStandards'      => 'req|alphanum',
+        'ProductGrades'         => 'req|alphanum',
+        'ProductDatasheet'      => 'req|alphanum',
     ];
 
     public function defaultAction()
@@ -48,21 +54,27 @@ class PipingController extends AbstractController
         $this->language->load('validation.errors');
         $this->_data['additionalHeaderCss'] = '';
 
-        $this->_data['categories'] = ProductCategoryModel::getAll();
 
-        $uploadError = false;
+        if(isset($_POST['submit']) /* && $this->isValid($this->_createActionRoles, $_POST)*/) {
 
-        if(isset($_POST['submit']) && $this->isValid($this->_createActionRoles, $_POST)) {
+            $product = new PipingModel();
+            $product->ProductName           = $this->filterString($_POST['productName']);
+            $product->ProductCat            = $this->filterString($_POST['ProductCat']);
+            $product->ProductDesc           = $this->filterString($_POST['ProductDesc']);
+            $product->ProductImages         = $this->filterString($_POST['pImages']);
+            $product->ProductWallThk        = 'From' . $this->filterString($_POST['wallThkFrom']) .' To '. $this->filterString($_POST['wallThkTo']);
+            $product->ProductLength         = 'From' . $this->filterString($_POST['lengthFrom']) .' To '. $this->filterString($_POST['lengthTo']);
+            $product->ProductCertificates   = $this->filterString(implode(', ', $_POST['certificates']));
+            $product->ProductOuterDia       = 'From' . $this->filterString($_POST['outerDiaFrom']) .' To '. $this->filterString($_POST['outerDiaTo']);
+            $product->ProductStandards      = $this->filterString(implode(', ', $_POST['ProductStandards']));
+            $product->ProductStandards      = $this->filterString(implode(', ', $_POST['ProductStandards']));
+            $product->ProductGrades         = $this->filterString(implode(', ', $_POST['steelGrades']));
+            $product->ProductTesting        = $this->filterString(implode(', ', $_POST['ProductTesting']));
+            $product->ProductDatasheet      = $this->filterString($_POST['datasheet']);
 
-            $product = new ProductModel();
-            $product->Name = $this->filterString($_POST['Name']);
-            $product->CategoryId = $this->filterInt($_POST['CategoryId']);
-            $product->Quantity = $this->filterInt($_POST['Quantity']);
-            $product->BuyPrice = $this->filterFloat($_POST['BuyPrice']);
-            $product->SellPrice = $this->filterFloat($_POST['SellPrice']);
-            $product->Unit = $this->filterInt($_POST['Unit']);
 
-            if(!empty($_FILES['image']['name'])) {
+            var_dump($product);
+/*          if(!empty($_FILES['image']['name'])) {
                 $uploader = new FileUpload($_FILES['image']);
                 try {
                     $uploader->upload();
@@ -78,8 +90,9 @@ class PipingController extends AbstractController
                 $this->redirect('/productlist');
             } else {
                 $this->messenger->add($this->language->get('message_create_failed'), messenger::APP_MESSAGE_ERROR);
-            }
+            }*/
         }
+
 
         $this->_view();
     }
