@@ -19,23 +19,26 @@ class PipingModel extends AbstractModel
     public $ProductGrades;
     public $ProductDatasheet;
 
-    protected static $tableName = 'app_piping';
+    protected static $tableName = 'app_piping_products';
 
     protected static $tableSchema = array(
         'ProductId'             => self::DATA_TYPE_INT,
         'ProductName'           => self::DATA_TYPE_STR,
         'ProductImages'         => self::DATA_TYPE_STR,
-        'ProductDesc'           => self::DATA_TYPE_INT,
-        'ProductCat'            => self::DATA_TYPE_DECIMAL,
-        'ProductOuterDia'       => self::DATA_TYPE_DECIMAL,
-        'ProductLength'         => self::DATA_TYPE_DECIMAL,
-        'ProductWallThk'        => self::DATA_TYPE_DECIMAL,
-        'ProductSurface'        => self::DATA_TYPE_INT,
+        'ProductDesc'           => self::DATA_TYPE_STR,
+        'ProductCat'            => self::DATA_TYPE_STR,
+        'ProductOuterDia'       => self::DATA_TYPE_STR,
+        'ProductLength'         => self::DATA_TYPE_STR,
+        'ProductWallThk'        => self::DATA_TYPE_STR,
+        'ProductSurface'        => self::DATA_TYPE_STR,
         'ProductTesting'        => self::DATA_TYPE_STR,
         'ProductCertificates'   => self::DATA_TYPE_STR,
         'ProductStandards'      => self::DATA_TYPE_STR,
         'ProductGrades'         => self::DATA_TYPE_STR,
+        'ProductTable'          => self::DATA_TYPE_STR,
         'ProductDatasheet'      => self::DATA_TYPE_STR,
+        'ProductDateReg'        => self::DATA_TYPE_STR,
+        'ProductUserId'         => self::DATA_TYPE_INT,
     );
 
     protected static $primaryKey = 'ProductId';

@@ -103,7 +103,7 @@
                         <?= $text_menu_products; ?><i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="ddMenu"  id="products">
-                        <li><a class="ddItem" href="/users/add"><?= $text_sub_menu_pipes; ?></a></li>
+                        <li><a class="ddItem" href="/piping/create"><?= $text_sub_menu_pipes; ?></a></li>
                         <li><a class="ddItem" href="#"><?= $text_sub_menu_pumps; ?></a></li>
                         <li><a class="ddItem" href="#"><?= $text_sub_menu_valves; ?></a></li>
                         <li><a class="ddItem" href="#"><?= $text_sub_menu_instruments; ?></a></li>

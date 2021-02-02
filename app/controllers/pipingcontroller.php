@@ -18,8 +18,7 @@ class PipingController extends AbstractController
     use Helper;
     use Validate;
 
-    private $_createActionRoles =
-    [
+    private $_createActionRoles = [
         'ProductName'           => 'req|alphanum|between(3,100)',
         'productImages'         => 'req|alphanum',
         'ProductDesc'           => 'req|alphanum',
@@ -32,6 +31,7 @@ class PipingController extends AbstractController
         'ProductStandards'      => 'req|alphanum',
         'ProductGrades'         => 'req|alphanum',
         'ProductDatasheet'      => 'req|alphanum',
+        'UserId'                => 'req|num'
     ];
 
     public function defaultAction()
@@ -46,6 +46,7 @@ class PipingController extends AbstractController
 
     public function createAction()
     {
+        //$this->_me();
         $this->language->load('template.common');
         $this->language->load('piping.create');
         $this->language->load('piping.labels');
@@ -58,42 +59,66 @@ class PipingController extends AbstractController
         if(isset($_POST['submit']) /* && $this->isValid($this->_createActionRoles, $_POST)*/) {
 
             $product = new PipingModel();
-            $product->ProductName           = $this->filterString($_POST['productName']);
-            $product->ProductCat            = $this->filterString($_POST['ProductCat']);
-            $product->ProductDesc           = $this->filterString($_POST['ProductDesc']);
-            $product->ProductImages         = $this->filterString($_POST['pImages']);
+            $product->ProductName           = $_POST['ProductName'] != '' ? $this->filterString($_POST['ProductName']) : '';
+            $product->ProductCat            = $_POST['ProductCat'] != '' ? $this->filterString($_POST['ProductCat']) : '';
+            $product->ProductDesc           = $_POST['ProductDesc'] != '' ? $this->filterString($_POST['ProductDesc']) : '';
+            $product->ProductImages         = '';
             $product->ProductWallThk        = 'From' . $this->filterString($_POST['wallThkFrom']) .' To '. $this->filterString($_POST['wallThkTo']);
             $product->ProductLength         = 'From' . $this->filterString($_POST['lengthFrom']) .' To '. $this->filterString($_POST['lengthTo']);
-            $product->ProductCertificates   = $this->filterString(implode(', ', $_POST['certificates']));
+            $product->ProductCertificates   = $_POST['ProductCertificates'] != '' ? $this->filterString(implode(', ', $_POST['ProductCertificates'])) : '';
             $product->ProductOuterDia       = 'From' . $this->filterString($_POST['outerDiaFrom']) .' To '. $this->filterString($_POST['outerDiaTo']);
-            $product->ProductStandards      = $this->filterString(implode(', ', $_POST['ProductStandards']));
-            $product->ProductStandards      = $this->filterString(implode(', ', $_POST['ProductStandards']));
-            $product->ProductGrades         = $this->filterString(implode(', ', $_POST['steelGrades']));
-            $product->ProductTesting        = $this->filterString(implode(', ', $_POST['ProductTesting']));
-            $product->ProductDatasheet      = $this->filterString($_POST['datasheet']);
+            $product->ProductStandards      = $_POST['ProductStandards'] != '' ? $this->filterString(implode(', ', $_POST['ProductStandards'])) : '';
+            $product->ProductSurface        = $_POST['ProductSurface'] != '' ? $this->filterString(implode(', ', $_POST['ProductSurface'])) : '';
+
+            $grades_cats = $_POST['ProductGrades'] != '' ? explode(', ', $this->filterString(implode(', ', $_POST['ProductGrades']))) : '';
+            $grades_full = [];
+            if (!empty($grades_cats)) {
+                foreach ($grades_cats as $grades_cat) {
+                    $item = explode('|', $grades_cat);
+                    $grades_full[$item[0]][] = $item[1];
+                }
+                $grades_full = json_encode($grades_full);
+            } else {
+                $grades_full = '';
+            }
+            $product->ProductGrades         = $grades_full;
+            $product->ProductTable          = '';
+            $product->ProductTesting        = $_POST['ProductTesting'] != '' ? $this->filterString(implode(', ', $_POST['ProductTesting'])) : '';
+            $product->ProductDatasheet      = !empty($_FILES['ProductDatasheet'])  ? $this->filterString($_FILES['ProductDatasheet']['name']) : '';
+            $product->ProductUserId         = $this->session->u->UserId;
 
 
-            var_dump($product);
-/*          if(!empty($_FILES['image']['name'])) {
-                $uploader = new FileUpload($_FILES['image']);
-                try {
-                    $uploader->upload();
-                    $product->Image = $uploader->getFileName();
-                } catch (\Exception $e) {
-                    $this->messenger->add($e->getMessage(), messenger::APP_MESSAGE_ERROR);
-                    $uploadError = true;
+            $this->_data['product'] =$product;
+            if(!empty($_FILES['ProductImages']['name'])) {
+                $filesToUpload = [];
+                for ($i = 0; $i < count($_FILES['ProductImages']['name']); $i++) {
+                    $filesToUpload[$i]['name'] = $_FILES['ProductImages']['name'][$i];
+                    $filesToUpload[$i]['type'] = $_FILES['ProductImages']['type'][$i];
+                    $filesToUpload[$i]['tmp_name'] = $_FILES['ProductImages']['tmp_name'][$i];
+                    $filesToUpload[$i]['error'] = $_FILES['ProductImages']['error'][$i];
+                    $filesToUpload[$i]['size'] = $_FILES['ProductImages']['size'][$i];
+
+                    $uploader = new FileUpload($filesToUpload[$i]);
+                    $uploadError = '';
+                    try {
+                        $uploader->upload();
+                        $product->ProductImages .= $i > 0 ? '|'.$uploader->getFileName() : $uploader->getFileName();
+
+                    } catch (\Exception $e) {
+                        $this->messenger->add($e->getMessage(), messenger::APP_MESSAGE_ERROR);
+                        $uploadError = true;
+                    }
+                    if ($uploadError === false && $product->save()) {
+                        $this->messenger->add($this->language->get('message_create_success'));
+                        $this->redirect('/piping/create');
+                    } else {
+                        $this->messenger->add($this->language->get('message_create_failed'), messenger::APP_MESSAGE_ERROR);
+                    }
                 }
             }
-            if($uploadError === false && $product->save())
-            {
-                $this->messenger->add($this->language->get('message_create_success'));
-                $this->redirect('/productlist');
-            } else {
-                $this->messenger->add($this->language->get('message_create_failed'), messenger::APP_MESSAGE_ERROR);
-            }*/
+            var_dump($product);
+            //$product->save();
         }
-
-
         $this->_view();
     }
 

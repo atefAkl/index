@@ -1,10 +1,7 @@
 <div style="height: 80px;"></div>
 
-<?php if (isset($_POST)) {
-    var_dump($_POST);
-    var_dump($_FILES);
-} ?>
-<form autocomplete="off" class="appForm clearfix" method="post" enctype="application/x-www-form-urlencoded" style="width: 50%; min-width: 500px">
+
+<form class="appForm clearfix" method="post" enctype="multipart/form-data" style="width: 50%; min-width: 500px">
     <fieldset>
         <legend><b><?= $text_legend ?></b></legend>
 
@@ -12,32 +9,32 @@
             <label class="block">
                 <b><?= $text_label_Name ?></b>
             </label>
-            <input required type="text" name="ProductName" maxlength="100"/>
+            <input type="text" name="ProductName" maxlength="100"/>
         </div>
         <div class="input_wrapper_other n50 border padding">
             <label class="block">
                 <b><?= $text_label_outerDia ?></b>
             </label>
-            <input required type="text" name="outerDiaFrom" class="border block" placeholder="<?= $text_ph_from ?>">
-            <input required type="text" name="outerDiaTo" class="border block" placeholder="<?= $text_ph_to ?>">
+            <input  type="text" name="outerDiaFrom" class="border block" placeholder="<?= $text_ph_from ?>">
+            <input  type="text" name="outerDiaTo" class="border block" placeholder="<?= $text_ph_to ?>">
         </div>
 
         <div class="input_wrapper_other border block padding">
             <label><b><?= $text_label_desc?></b></label>
-            <textarea required  name="ProductDesc" class="border" placeholder="<?= $text_ph_from ?>">
+            <textarea   name="ProductDesc" class="border" placeholder="<?= $text_ph_from ?>">
             </textarea>
         </div>
 
         <div class="input_wrapper_other n50 border padding">
             <label class="noFloat block"><b><?= $text_label_wallThk ?></b></label>
-            <input required type="text" class="border block" name="wallThkFrom" placeholder="<?= $text_ph_from ?>">
-            <input required type="text" class="border block" name="wallThkTo"  placeholder="<?= $text_ph_to ?>">
+            <input  type="text" class="border block" name="wallThkFrom" placeholder="<?= $text_ph_from ?>">
+            <input  type="text" class="border block" name="wallThkTo"  placeholder="<?= $text_ph_to ?>">
         </div>
 
         <div class="input_wrapper_other n50 border padding">
             <label class="noFloat block"><b><?= $text_label_length ?></b></label>
-            <input required type="text" class="border block" name="lengthFrom" placeholder="<?= $text_ph_from ?>">
-            <input required type="text" class="border block" name="lengthTo"  placeholder="<?= $text_ph_to ?>">
+            <input  type="text" class="border block" name="lengthFrom" placeholder="<?= $text_ph_from ?>">
+            <input  type="text" class="border block" name="lengthTo"  placeholder="<?= $text_ph_to ?>">
         </div>
 
         <div class="input_wrapper_other border n30 padding select">
@@ -79,7 +76,7 @@
             ];
             if ($surfaces !== false): foreach ($surfaces as $surface): ?>
                 <label class="checkbox">
-                    <input type="checkbox" name="surface[]" id="surface" value="<?= $surface ?>">
+                    <input type="checkbox" name="ProductSurface[]" id="ProductSurface" value="<?= $surface ?>">
                     <div class="checkbox_button"></div>
                     <span><?= $surface ?></span>
                 </label>
@@ -111,7 +108,7 @@
             ];
             if ($certificates !== false): foreach ($certificates as $certificate): ?>
                 <label class="checkbox">
-                    <input type="checkbox" name="certificates[]" id="certificates" value="<?= $certificate ?>">
+                    <input type="checkbox" name="ProductCertificates[]" id="certificates" value="<?= $certificate ?>">
                     <div class="checkbox_button"></div>
                     <span><?= $certificate ?></span>
                 </label>
@@ -128,7 +125,7 @@
                 'for bridges; piers', 'roads', 'buildings and other structures tube'];
             if ($applications !== false): foreach ($applications as $apply): ?>
                 <label class="checkbox">
-                    <input type="checkbox" name="applications[]" id="applications" value="<?= $apply ?>">
+                    <input type="checkbox" name="ProductApplications[]" id="applications" value="<?= $apply ?>">
                     <div class="checkbox_button"></div>
                     <span><?= $apply ?></span>
                 </label>
@@ -170,7 +167,7 @@
                 <h4><b><?= $steel_grade ?></b></h4>
                 <?php foreach ($grades as $key => $value): ?>
                     <label class="checkbox">
-                        <input type="checkbox" cols="40" name="steelGrades[]" id="grades" value="<?= $steel_grade . '|' . $value ?>">
+                        <input type="checkbox" cols="40" name="ProductGrades[]" id="grades" value="<?= $steel_grade . '|' . $value ?>">
                         <div class="checkbox_button"></div>
                         <span><?= $value ?></span>
                     </label>
@@ -178,11 +175,11 @@
         </div>
         <div class="input_wrapper n100">
             <label class="floated"><?= $text_label_imgs ?></label>
-            <input type="file" name="pImages" accept="image/*" id="pImages" multiple>
+            <input type="file" name="ProductImages[]" accept="image/*" id="pImages" multiple>
         </div>
         <div class="input_wrapper n100">
             <label class="floated"><?= $text_label_datasheet ?></label>
-            <input type="file" name="datasheet" accept="application/pdf">
+            <input type="file" name="ProductDatasheet" accept="application/pdf" id="datasheet">
         </div>
 
 
@@ -193,6 +190,11 @@
 
 
 </form>
+<?php
+if (!empty($_FILES)) {
+    var_dump($_FILES);
+} ?>
+
 <script>
     $('#pImages').on('change', function () {
         console.log($('this').files);

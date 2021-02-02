@@ -13,7 +13,7 @@ class FileUpload
     private $fileExtension;
 
     private $allowedExtensions = [
-        'jpg', 'png', 'gif', 'pdf', 'doc', 'docx', 'xls'
+        'jpg', 'png', 'gif', 'pdf', 'doc', 'docx', 'xls', 'JPG', 'JPEG'
     ];
 
     public function __construct(array $file)
@@ -29,7 +29,7 @@ class FileUpload
     private function name()
     {
         preg_match_all('/([a-z]{1,4})$/i', $this->name, $m);
-        $this->fileExtension = $m[0][0];
+        $this->fileExtension = strtolower($m[0][0]);
         $name = substr(strtolower(base64_encode($this->name . APP_SALT)), 0, 30);
         $name = preg_replace('/(\w{6})/i', '$1_', $name);
         $name = rtrim($name, '_');
