@@ -19,7 +19,9 @@ class ProductCategoriesController extends AbstractController
 
     private $_createActionRoles =
     [
-        'Name'          => 'req|alphanum|between(3,30)'
+        'CategoryName'          => 'req|alphanum|between(3,30)',
+        'CategoryDesc'           => 'req|alphanum|between(3,300)',
+        'CategoryParent'         => 'req|num'
     ];
 
     public function defaultAction()
@@ -28,6 +30,7 @@ class ProductCategoriesController extends AbstractController
         $this->language->load('productcategories.default');
 
         $this->_data['categories'] = ProductCategoryModel::getAll();
+        $this->_data['additionalHeaderCss'] = '';
 
         $this->_view();
     }
@@ -39,32 +42,42 @@ class ProductCategoriesController extends AbstractController
         $this->language->load('productcategories.labels');
         $this->language->load('productcategories.messages');
         $this->language->load('validation.errors');
+        $this->_data['additionalHeaderCss'] = '';
+        $this->_data['categories'] = ProductCategoryModel::getAll();;
+        $cat = new ProductCategoryModel();
+        $this->_data['newCategory'] = $cat;
+
 
         $uploadError = false;
+        if (isset($_POST['submit'])) {
+            $cat->CategoryName = $_POST['CategoryName'] != '' ? trim($this->filterString($_POST['CategoryName'])) : '';
+            $cat->CategoryDesc = $_POST['CategoryDesc'] != '' ? trim($this->filterString($_POST['CategoryDesc'])) : '';
+            $cat->ParentCategory = null;
 
-        // TODO:: explain a better solution to check against file type
-        // TODO:: explain a better soution to secure the upload folder
-        if(isset($_POST['submit']) && $this->isValid($this->_createActionRoles, $_POST)) {
-            $category = new ProductCategoryModel();
-            $category->Name = $this->filterString($_POST['Name']);
-            if(!empty($_FILES['image']['name'])) {
-                $uploader = new FileUpload($_FILES['image']);
+            if(!empty($_FILES['CategoryImage']['name'])) {
+                $uploader = new FileUpload($_FILES['CategoryImage']);
                 try {
                     $uploader->upload();
-                    $category->Image = $uploader->getFileName();
+                    $cat->CategoryImage = $uploader->getFileName();
                 } catch (\Exception $e) {
                     $this->messenger->add($e->getMessage(), messenger::APP_MESSAGE_ERROR);
                     $uploadError = true;
                 }
             }
-            if($uploadError === false && $category->save())
+            if(!$uploadError)
             {
                 $this->messenger->add($this->language->get('message_create_success'));
-                $this->redirect('/productcategories');
             } else {
                 $this->messenger->add($this->language->get('message_create_failed'), messenger::APP_MESSAGE_ERROR);
             }
+            if ($cat->save()) {
+                $this->redirect('/productcategories');
+            }
         }
+
+        // TODO:: explain a better solution to check against file type
+        // TODO:: explain a better soution to secure the upload folder
+
 
         $this->_view();
     }
@@ -73,7 +86,9 @@ class ProductCategoriesController extends AbstractController
     {
 
         $id = $this->filterInt($this->_params[0]);
+        $this->_data['additionalHeaderCss'] = '';
         $category = ProductCategoryModel::getByPK($id);
+        $categories = ProductCategoryModel::getAll();
 
         if($category === false) {
             $this->redirect('/productcategories');
@@ -87,33 +102,34 @@ class ProductCategoriesController extends AbstractController
 
 
         $this->_data['category'] = $category;
+        $this->_data['categories'] = $categories;
         $uploadError = false;
 
         if(isset($_POST['submit'])) {
-            $category->Name = $this->filterString($_POST['Name']);
-            if(!empty($_FILES['image']['name'])) {
+            $category->Name = $this->filterString($_POST['CategoryName']);
+            $category->Name = $this->filterString($_POST['CategoryDesc']);
+            $category->Name = $this->filterInt($_POST['ParentCategory']);
+            if(!empty($_FILES['CategoryImage']['name'])) {
                 // Remove the old image
-                if($category->Image !== '' && file_exists(IMAGES_UPLOAD_STORAGE.DS.$category->Image) && is_writable(IMAGES_UPLOAD_STORAGE)) {
-                    unlink(IMAGES_UPLOAD_STORAGE.DS.$category->Image);
+                if($category->categoryImage !== '' && file_exists(IMAGES_UPLOAD_STORAGE.DS.$category->categoryImage) && is_writable(IMAGES_UPLOAD_STORAGE)) {
+                    unlink(IMAGES_UPLOAD_STORAGE.DS.$category->categoryImage);
+                    // Create a new image
+                    $uploader = new FileUpload($_FILES['CategoryImage']);
+                    try {
+                        $uploader->upload();
+                        $category->categoryImage = $uploader->getFileName();
+                    } catch (\Exception $e) {
+                        $this->messenger->add($e->getMessage(), messenger::APP_MESSAGE_ERROR);
+                        $uploadError = true;
+                    }
                 }
-                // Create a new image
-                $uploader = new FileUpload($_FILES['image']);
-                try {
-                    $uploader->upload();
-                    $category->Image = $uploader->getFileName();
-                } catch (\Exception $e) {
-                    $this->messenger->add($e->getMessage(), messenger::APP_MESSAGE_ERROR);
-                    $uploadError = true;
-                }
+
             }
-            if($uploadError === false && $category->save())
-            {
-                $this->messenger->add($this->language->get('message_create_success'));
-                $this->redirect('/productcategories');
-            } else {
-                $this->messenger->add($this->language->get('message_create_failed'), messenger::APP_MESSAGE_ERROR);
-            }
+
+
+            //$this->redirect('/productcategories');
         }
+
 
         $this->_view();
     }

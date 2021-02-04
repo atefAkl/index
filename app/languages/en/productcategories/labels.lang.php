@@ -1,6 +1,9 @@
 <?php
 
-$_['text_legend'] = 'بيانات القسم';
-$_['text_label_category_title'] = 'اسم قسم المنتجات';
-$_['text_label_category_image'] = 'صورة قسم المنتجات';
-$_['text_label_save'] = 'حفظ';
+$_['text_legend'] = 'Categories Data';
+$_['text_label_title'] = 'Category Title';
+$_['text_label_image'] = 'category Image';
+$_['text_label_name'] = 'Category Name';
+$_['text_label_desc'] = 'Category Description';
+$_['text_label_parent'] = 'Parent Category Name';
+$_['text_label_save'] = 'Save Category';

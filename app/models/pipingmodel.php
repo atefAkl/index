@@ -18,6 +18,10 @@ class PipingModel extends AbstractModel
     public $ProductStandards;
     public $ProductGrades;
     public $ProductDatasheet;
+    public $productTables;
+    public $UserId;
+    public $ProductDateReg;
+
 
     protected static $tableName = 'app_piping_products';
 
@@ -35,19 +39,13 @@ class PipingModel extends AbstractModel
         'ProductCertificates'   => self::DATA_TYPE_STR,
         'ProductStandards'      => self::DATA_TYPE_STR,
         'ProductGrades'         => self::DATA_TYPE_STR,
-        'ProductTable'          => self::DATA_TYPE_STR,
+        'ProductTables'          => self::DATA_TYPE_STR,
         'ProductDatasheet'      => self::DATA_TYPE_STR,
         'ProductDateReg'        => self::DATA_TYPE_STR,
-        'ProductUserId'         => self::DATA_TYPE_INT,
+        'UserId'                => self::DATA_TYPE_INT,
     );
 
     protected static $primaryKey = 'ProductId';
 
-    public static function getAll()
-    {
-        $sql = 'SELECT apl.*, apc.Name categoryName FROM ' . self::$tableName . ' apl';
-        $sql .= ' INNER JOIN ' . ProductCategoryModel::getModelTableName() . ' apc';
-        $sql .= ' ON apc.CategoryId = apl.CategoryId';
-        return self::get($sql);
-    }
+
 }

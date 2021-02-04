@@ -19,18 +19,22 @@ class PipingController extends AbstractController
     use Validate;
 
     private $_createActionRoles = [
-        'ProductName'           => 'req|alphanum|between(3,100)',
-        'productImages'         => 'req|alphanum',
+        'ProductId'             => 'req|alphanum|between(3,100)',
+        'ProductName'           => 'req|alphanum',
+        'ProductImages'         => 'req|alphanum',
         'ProductDesc'           => 'req|alphanum',
         'ProductCat'            => 'req|alphanum',
         'ProductOuterDia'       => 'req|alphanum',
         'ProductLength'         => 'req|alphanum',
         'ProductWallThk'        => 'req|alphanum',
         'ProductSurface'        => 'req|alphanum',
+        'ProductTesting'        => 'req|alphanum',
         'ProductCertificates'   => 'req|alphanum',
         'ProductStandards'      => 'req|alphanum',
         'ProductGrades'         => 'req|alphanum',
+        'ProductTables'         => 'req|alphanum',
         'ProductDatasheet'      => 'req|alphanum',
+        'ProductDateReg'        => 'req|alphanum',
         'UserId'                => 'req|num'
     ];
 
@@ -39,7 +43,8 @@ class PipingController extends AbstractController
         $this->language->load('template.common');
         $this->language->load('piping.default');
 
-        $this->_data['piping'] = ProductModel::getAll();
+        $this->_data['piping'] = PipingModel::getAll();
+        $this->_data['session'] = $this->session;
 
         $this->_view();
     }
@@ -47,11 +52,11 @@ class PipingController extends AbstractController
     public function createAction()
     {
         //$this->_me();
+        ob_start();
         $this->language->load('template.common');
         $this->language->load('piping.create');
         $this->language->load('piping.labels');
         $this->language->load('productlist.messages');
-        $this->language->load('productlist.units');
         $this->language->load('validation.errors');
         $this->_data['additionalHeaderCss'] = '';
 
@@ -62,13 +67,13 @@ class PipingController extends AbstractController
             $product->ProductName           = $_POST['ProductName'] != '' ? $this->filterString($_POST['ProductName']) : '';
             $product->ProductCat            = $_POST['ProductCat'] != '' ? $this->filterString($_POST['ProductCat']) : '';
             $product->ProductDesc           = $_POST['ProductDesc'] != '' ? $this->filterString($_POST['ProductDesc']) : '';
-            $product->ProductImages         = '';
-            $product->ProductWallThk        = 'From' . $this->filterString($_POST['wallThkFrom']) .' To '. $this->filterString($_POST['wallThkTo']);
-            $product->ProductLength         = 'From' . $this->filterString($_POST['lengthFrom']) .' To '. $this->filterString($_POST['lengthTo']);
+            $product->ProductWallThk        = 'From ' . $this->filterString($_POST['wallThkFrom']) .' To '. $this->filterString($_POST['wallThkTo']);
+            $product->ProductLength         = 'From ' . $this->filterString($_POST['lengthFrom']) .' To '. $this->filterString($_POST['lengthTo']);
             $product->ProductCertificates   = $_POST['ProductCertificates'] != '' ? $this->filterString(implode(', ', $_POST['ProductCertificates'])) : '';
-            $product->ProductOuterDia       = 'From' . $this->filterString($_POST['outerDiaFrom']) .' To '. $this->filterString($_POST['outerDiaTo']);
+            $product->ProductOuterDia       = 'From ' . $this->filterString($_POST['outerDiaFrom']) .' To '. $this->filterString($_POST['outerDiaTo']);
             $product->ProductStandards      = $_POST['ProductStandards'] != '' ? $this->filterString(implode(', ', $_POST['ProductStandards'])) : '';
             $product->ProductSurface        = $_POST['ProductSurface'] != '' ? $this->filterString(implode(', ', $_POST['ProductSurface'])) : '';
+
 
             $grades_cats = $_POST['ProductGrades'] != '' ? explode(', ', $this->filterString(implode(', ', $_POST['ProductGrades']))) : '';
             $grades_full = [];
@@ -82,44 +87,79 @@ class PipingController extends AbstractController
                 $grades_full = '';
             }
             $product->ProductGrades         = $grades_full;
-            $product->ProductTable          = '';
+            $product->ProductImages         = '';
+            $product->ProductTables         = '';
+            $product->ProductDatasheet      = '';
             $product->ProductTesting        = $_POST['ProductTesting'] != '' ? $this->filterString(implode(', ', $_POST['ProductTesting'])) : '';
-            $product->ProductDatasheet      = !empty($_FILES['ProductDatasheet'])  ? $this->filterString($_FILES['ProductDatasheet']['name']) : '';
-            $product->ProductUserId         = $this->session->u->UserId;
-
+            $product->UserId                = $this->session->u->UserId;
+            $product->ProductDateReg        = Date("Y-M-d D, h:m:s");
 
             $this->_data['product'] =$product;
-            if(!empty($_FILES['ProductImages']['name'])) {
-                $filesToUpload = [];
-                for ($i = 0; $i < count($_FILES['ProductImages']['name']); $i++) {
-                    $filesToUpload[$i]['name'] = $_FILES['ProductImages']['name'][$i];
-                    $filesToUpload[$i]['type'] = $_FILES['ProductImages']['type'][$i];
-                    $filesToUpload[$i]['tmp_name'] = $_FILES['ProductImages']['tmp_name'][$i];
-                    $filesToUpload[$i]['error'] = $_FILES['ProductImages']['error'][$i];
-                    $filesToUpload[$i]['size'] = $_FILES['ProductImages']['size'][$i];
+            function regImages($img, $imgName, $product, $obj) {
+                if(!empty($img)) {
+                    $filesToUpload = [];
+                    if (is_array($img['name'])) {
+                        for ($i = 0; $i < count($img['name']); $i++) {
+                            $filesToUpload[$i]['name'] = $img['name'][$i];
+                            $filesToUpload[$i]['type'] = $img['type'][$i];
+                            $filesToUpload[$i]['tmp_name'] = $img['tmp_name'][$i];
+                            $filesToUpload[$i]['error'] = $img['error'][$i];
+                            $filesToUpload[$i]['size'] = $img['size'][$i];
 
-                    $uploader = new FileUpload($filesToUpload[$i]);
-                    $uploadError = '';
-                    try {
-                        $uploader->upload();
-                        $product->ProductImages .= $i > 0 ? '|'.$uploader->getFileName() : $uploader->getFileName();
+                            $uploader = new FileUpload($filesToUpload[$i]);
+                            $uploadError = '';
+                            try {
+                                $uploader->upload();
+                                $product->$imgName .= $i > 0 ? '|'.$uploader->getFileName() : $uploader->getFileName();
 
-                    } catch (\Exception $e) {
-                        $this->messenger->add($e->getMessage(), messenger::APP_MESSAGE_ERROR);
-                        $uploadError = true;
-                    }
-                    if ($uploadError === false && $product->save()) {
-                        $this->messenger->add($this->language->get('message_create_success'));
-                        $this->redirect('/piping/create');
+                            } catch (\Exception $e) {
+                                $obj->messenger->add($e->getMessage(), messenger::APP_MESSAGE_ERROR);
+                                $uploadError = true;
+                            }
+                            if (!$uploadError) {
+                                $obj->messenger->add($obj->language->get('message_create_success'));
+                            } else {
+                                $obj->messenger->add($obj->language->get('message_create_failed'), messenger::APP_MESSAGE_ERROR);
+                            }
+                        }
                     } else {
-                        $this->messenger->add($this->language->get('message_create_failed'), messenger::APP_MESSAGE_ERROR);
+                        $filesToUpload['name'] = $img['name'];
+                        $filesToUpload['type'] = $img['type'];
+                        $filesToUpload['tmp_name'] = $img['tmp_name'];
+                        $filesToUpload['error'] = $img['error'];
+                        $filesToUpload['size'] = $img['size'];
+                        $uploader = new FileUpload($filesToUpload);
+                        $uploadError = '';
+                        try {
+                            $uploader->upload();
+                            $product->$imgName = $uploader->getFileName();
+
+                        } catch (\Exception $e) {
+                            $obj->messenger->add($e->getMessage(), messenger::APP_MESSAGE_ERROR);
+                            $uploadError = true;
+                        }
+                        if (!$uploadError) {
+                            $obj->messenger->add($obj->language->get('message_create_success'));
+
+                        } else {
+                            $obj->messenger->add($obj->language->get('message_create_failed'), messenger::APP_MESSAGE_ERROR);
+                        }
                     }
                 }
+
+
             }
+            regImages($_FILES['ProductImages'], 'ProductImages', $product, $this);
+            regImages($_FILES['ProductDatasheet'], 'ProductDatasheet', $product, $this);
+            regImages($_FILES['ProductTables'], 'ProductTables', $product, $this);
             var_dump($product);
-            //$product->save();
+            if ($product->save()) {
+                $this->redirect('/piping/');
+            }
+
         }
         $this->_view();
+        ob_end_flush();
     }
 
     public function editAction()

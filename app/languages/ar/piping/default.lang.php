@@ -7,4 +7,5 @@ $_['text_nav_about']            = 'من نحن';
 $_['text_nav_products']         = 'منتجات السباكة';
 $_['text_nav_projects']         = 'مشروعات السباكة';
 $_['text_nav_inquiry']          = 'تسجيل طلبية';
+$_['text_nav_manage']           = 'إدارة';
 $_['text_qlinks_header']        = 'منتجات السباكة - روابط سريعة' ;

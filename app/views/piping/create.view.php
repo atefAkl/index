@@ -16,25 +16,25 @@
                 <b><?= $text_label_outerDia ?></b>
             </label>
             <input  type="text" name="outerDiaFrom" class="border block" placeholder="<?= $text_ph_from ?>">
-            <input  type="text" name="outerDiaTo" class="border block" placeholder="<?= $text_ph_to ?>">
+            <input  type="text" name="outerDiaTo" class="border block" placeholder="<?= $text_ph_to ?>"> mm
         </div>
 
         <div class="input_wrapper_other border block padding">
             <label><b><?= $text_label_desc?></b></label>
-            <textarea   name="ProductDesc" class="border" placeholder="<?= $text_ph_from ?>">
+            <textarea   name="ProductDesc" class="border" style="color:#167698">
             </textarea>
         </div>
 
         <div class="input_wrapper_other n50 border padding">
             <label class="noFloat block"><b><?= $text_label_wallThk ?></b></label>
             <input  type="text" class="border block" name="wallThkFrom" placeholder="<?= $text_ph_from ?>">
-            <input  type="text" class="border block" name="wallThkTo"  placeholder="<?= $text_ph_to ?>">
+            <input  type="text" class="border block" name="wallThkTo"  placeholder="<?= $text_ph_to ?>"> mm
         </div>
 
         <div class="input_wrapper_other n50 border padding">
             <label class="noFloat block"><b><?= $text_label_length ?></b></label>
             <input  type="text" class="border block" name="lengthFrom" placeholder="<?= $text_ph_from ?>">
-            <input  type="text" class="border block" name="lengthTo"  placeholder="<?= $text_ph_to ?>">
+            <input  type="text" class="border block" name="lengthTo"  placeholder="<?= $text_ph_to ?>"> mm
         </div>
 
         <div class="input_wrapper_other border n30 padding select">
@@ -177,9 +177,15 @@
             <label class="floated"><?= $text_label_imgs ?></label>
             <input type="file" name="ProductImages[]" accept="image/*" id="pImages" multiple>
         </div>
+
         <div class="input_wrapper n100">
             <label class="floated"><?= $text_label_datasheet ?></label>
             <input type="file" name="ProductDatasheet" accept="application/pdf" id="datasheet">
+        </div>
+
+        <div class="input_wrapper n100">
+            <label class="floated"><?= $text_label_tables ?></label>
+            <input type="file" name="ProductTables[]" accept="image/*" id="tables" multiple>
         </div>
 
 
