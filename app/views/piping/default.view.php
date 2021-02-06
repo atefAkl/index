@@ -46,6 +46,9 @@
                 <a href="/productcategories/create">
                     add new product category
                 </a>
+                <a href="/fields">
+                    add new product category
+                </a>
             </li>
         </ul>
     </div>

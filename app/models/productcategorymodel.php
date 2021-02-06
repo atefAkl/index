@@ -22,11 +22,11 @@ class ProductCategoryModel extends AbstractModel
 
     protected static $primaryKey = 'CategoryId';
 
-    public static function getAll()
-    {
-        $sql = 'SELECT *, '. self::$tableName.'CategoryName ParentName FROM ' . self::$tableName;
-        $sql .= ' INNER JOIN ' . ProductCategoryModel::getModelTableName();
-        $sql .= ' ON '. self::$tableName.'.CategoryId = '. self::$tableName.'.ParentCategory';
-        return self::get($sql);
-    }
+//    public static function getAll()
+//    {
+//        $sql = 'SELECT '.self::$tableName.'*, app_products_categories.CategoryName FROM ' . self::$tableName;
+//        $sql .= ' INNER JOIN ' . ProductCategoryModel::getModelTableName();
+//        $sql .= ' ON '. self::$tableName.'.ParentCategory = '. self::$tableName.'.CategoryID';
+//        return self::get($sql);
+//    }
 }

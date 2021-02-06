@@ -137,7 +137,7 @@ footer, header, hgroup, menu, figure, figcaption, time, meter {
     padding: 0;
     border: none;
     outline: none;
-    vertical-align: baseline;
+    vertical-align: top;
 }
 
 h1, h2, h3, h4, h5, h6, p, li, a, input, select,

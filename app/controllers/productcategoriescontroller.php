@@ -5,6 +5,7 @@ use PHPMVC\LIB\Helper;
 use PHPMVC\LIB\InputFilter;
 use PHPMVC\lib\messenger;
 use PHPMVC\Lib\Validate;
+use PHPMVC\Models\FieldsModel;
 use PHPMVC\Models\PrivilegeModel;
 use PHPMVC\Models\ProductCategoryModel;
 use PHPMVC\Models\UserGroupModel;
@@ -44,6 +45,7 @@ class ProductCategoriesController extends AbstractController
         $this->language->load('validation.errors');
         $this->_data['additionalHeaderCss'] = '';
         $this->_data['categories'] = ProductCategoryModel::getAll();;
+        $this->_data['fields'] = FieldsModel::selectOnly('FieldId, FieldName');;
         $cat = new ProductCategoryModel();
         $this->_data['newCategory'] = $cat;
 
