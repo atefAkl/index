@@ -21,8 +21,8 @@ class ProductCategoriesController extends AbstractController
     private $_createActionRoles =
     [
         'CategoryName'          => 'req|alphanum|between(3,30)',
-        'CategoryDesc'           => 'req|alphanum|between(3,300)',
-        'CategoryParent'         => 'req|num'
+        'CategoryDesc'          => 'req|alphanum|between(3,300)',
+        'CategoryField'         => 'req|num'
     ];
 
     public function defaultAction()
@@ -31,6 +31,7 @@ class ProductCategoriesController extends AbstractController
         $this->language->load('productcategories.default');
 
         $this->_data['categories'] = ProductCategoryModel::getAll();
+        $this->_data['fields'] = FieldsModel::getAll();
         $this->_data['additionalHeaderCss'] = '';
 
         $this->_view();
@@ -90,7 +91,6 @@ class ProductCategoriesController extends AbstractController
         $id = $this->filterInt($this->_params[0]);
         $this->_data['additionalHeaderCss'] = '';
         $category = ProductCategoryModel::getByPK($id);
-        $categories = ProductCategoryModel::getAll();
 
         if($category === false) {
             $this->redirect('/productcategories');
@@ -102,24 +102,25 @@ class ProductCategoriesController extends AbstractController
         $this->language->load('productcategories.messages');
         $this->language->load('validation.errors');
 
-
+        $fields = new FieldsModel();
         $this->_data['category'] = $category;
-        $this->_data['categories'] = $categories;
+        $this->_data['fields'] = $fields::getAll();
         $uploadError = false;
 
         if(isset($_POST['submit'])) {
-            $category->Name = $this->filterString($_POST['CategoryName']);
-            $category->Name = $this->filterString($_POST['CategoryDesc']);
-            $category->Name = $this->filterInt($_POST['ParentCategory']);
+            $category->CategoryName    = $this->filterString($_POST['CategoryName']);
+            $category->CategoryDesc    = $this->filterString($_POST['CategoryDesc']);
+            $category->CategoryField   = $this->filterInt($_POST['CategoryField']);
             if(!empty($_FILES['CategoryImage']['name'])) {
                 // Remove the old image
-                if($category->categoryImage !== '' && file_exists(IMAGES_UPLOAD_STORAGE.DS.$category->categoryImage) && is_writable(IMAGES_UPLOAD_STORAGE)) {
-                    unlink(IMAGES_UPLOAD_STORAGE.DS.$category->categoryImage);
+                if($category->CategoryImage !== '' && file_exists(IMAGES_UPLOAD_STORAGE.DS.$category->CategoryImage) && is_writable(IMAGES_UPLOAD_STORAGE)) {
+                    unlink(IMAGES_UPLOAD_STORAGE.DS.$category->CategoryImage);
                     // Create a new image
                     $uploader = new FileUpload($_FILES['CategoryImage']);
                     try {
                         $uploader->upload();
-                        $category->categoryImage = $uploader->getFileName();
+                        $category->CategoryImage = $uploader->getFileName();
+
                     } catch (\Exception $e) {
                         $this->messenger->add($e->getMessage(), messenger::APP_MESSAGE_ERROR);
                         $uploadError = true;
@@ -128,8 +129,9 @@ class ProductCategoriesController extends AbstractController
 
             }
 
-
-            //$this->redirect('/productcategories');
+            if ($category->save()) {
+                $this->redirect('/productcategories');
+            }
         }
 
 
@@ -151,8 +153,8 @@ class ProductCategoriesController extends AbstractController
         if($category->delete())
         {
             // Remove the old image
-            if($category->Image !== '' && file_exists(IMAGES_UPLOAD_STORAGE.DS.$category->Image)) {
-                unlink(IMAGES_UPLOAD_STORAGE.DS.$category->Image);
+            if($category->CategoryImage !== '' && file_exists(IMAGES_UPLOAD_STORAGE.DS.$category->CategoryImage)) {
+                unlink(IMAGES_UPLOAD_STORAGE.DS.$category->CategoryImage);
             }
             $this->messenger->add($this->language->get('message_delete_success'));
         } else {

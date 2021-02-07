@@ -15,5 +15,6 @@
             </div>
             <input type="submit" name="login" value="<?= $login_button ?>">
         </form>
+        <a href="/auth/loginasvisitor">Continue as Visitor</a>
     </div>
 </div>

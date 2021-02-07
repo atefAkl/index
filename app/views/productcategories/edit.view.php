@@ -4,7 +4,7 @@
         <legend><?= $text_legend ?></legend>
         <div class="input_wrapper n100">
             <label class="floated block"><?= $text_label_name ?></label>
-            <input required type="text" name="CategoryName" id="Name" maxlength="20" value="<?= $this->showValue('CategoryName', $category) ?>">
+            <input required type="text" name="CategoryName" id="Name" maxlength="60" value="<?= $this->showValue('CategoryName', $category) ?>">
         </div>
 
         <div class="input_wrapper_other border block padding">
@@ -26,21 +26,18 @@
 
         <div class="input_wrapper_other n50 padding select">
             <label class="floated block"><?= $text_label_parent ?></label>
-            <select name="ParentCategory" id="ParentCategory">
+            <select name="CategoryField" id="CategoryField">
                 <option value="null">No Parent Categories Yet</option>
                 <?php
-                if ($categories != false) {
-                    foreach ($categories as $cat) {                        ?>
-                        <option value="<?= $cat->CategoryId; ?>" <?= $category->ParentCategory == $cat->CategoryId ? 'selected' : ''?>>
-                            <?= $cat->CategoryName, $category->ParentCategory, $cat->CategoryId ;?></option>
+                if ($fields != false) {
+                    foreach ($fields as $field) {                        ?>
+                        <option value="<?= $field->FieldId; ?>" <?= $field->FieldId == $category->CategoryField ? 'selected' : ''?>>
+                            <?= $field->FieldName ?></option>
                     <?php } } ?>
             </select>
         </div>
 
         <input class="no_float" type="submit" name="submit" value="<?= $text_label_save ?>">
 
-        <?php var_dump($categories);
-        var_dump($categories);
-        ?>
     </fieldset>
 </form>

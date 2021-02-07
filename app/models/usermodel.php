@@ -27,7 +27,7 @@ class UserModel extends AbstractModel
         'Password'          => self::DATA_TYPE_STR,
         'Email'             => self::DATA_TYPE_STR,
         'PhoneNumber'       => self::DATA_TYPE_STR,
-        'SubscriptionDate'  => self::DATA_TYPE_DATE,
+        'SubscriptionDate'  => self::DATA_TYPE_STR,
         'LastLogin'         => self::DATA_TYPE_STR,
         'GroupId'           => self::DATA_TYPE_INT,
         'Status'            => self::DATA_TYPE_INT,
@@ -60,11 +60,13 @@ class UserModel extends AbstractModel
         $password = crypt($password, APP_SALT) ;
         $sql = 'SELECT *, (SELECT GroupName FROM app_users_groups WHERE app_users_groups.GroupId = ' . self::$tableName . '.GroupId) GroupName FROM ' . self::$tableName . ' WHERE Username = "' . $username . '" AND Password = "' .  $password . '"';
         $foundUser = self::getOne($sql);
+        var_dump($foundUser);
         if(false !== $foundUser) {
             if($foundUser->Status == 2) {
                 return 2;
             }
             $foundUser->LastLogin = date('Y-m-d H:i:s');
+            //var_dump($foundUser);
             $foundUser->save();
             $foundUser->profile = UserProfileModel::getByPK($foundUser->UserId);
             $foundUser->privileges = UserGroupPrivilegeModel::getPrivilegesForGroup($foundUser->GroupId);
