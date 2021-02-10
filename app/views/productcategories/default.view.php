@@ -4,7 +4,6 @@
         <table class="data">
             <thead>
                 <tr>
-                    <th><?= $text_table_group_image ?></th>
                     <th><?= $text_table_group_name ?></th>
                     <th><?= $text_table_group_desc ?></th>
                     <th><?= $text_table_group_parent ?></th>
@@ -14,8 +13,11 @@
             <tbody>
             <?php if(false !== $categories): foreach ($categories as $category): ?>
                 <tr>
-                    <td><img src="/uploads/images/<?= $category->CategoryImage ?>" alt="" width="50" height="50"></td>
-                    <td><?= $category->CategoryName ?></td>
+                    <td>
+                        <img src="/uploads/images/<?= $category->CategoryImage ?>" alt="" width="200" height="150">
+                        <b style="font-size: 1.5em"><?= $category->CategoryName ?></b>
+                    </td>
+
                     <td><?= $category->CategoryDesc ?></td>
                     <td><?= $category->Field ?></td>
                     <td>

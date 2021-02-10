@@ -25,7 +25,7 @@
             </ul>
         </li>
         <li class="submenu">
-            <a href="javascript:;"><i class="material-icons">store</i> <?= $text_store ?></a>
+            <a href="/productlist"><i class="material-icons">store</i> <?= $text_store ?></a>
             <ul>
                 <li><a href="/productcategories"><i class="fa fa-archive"></i> <?= $text_store_categories ?></a></li>
                 <li><a href="/productlist"><i class="fa fa-tag"></i> <?= $text_store_products ?></a></li>

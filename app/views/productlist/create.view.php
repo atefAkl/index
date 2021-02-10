@@ -42,3 +42,6 @@
         <input class="no_float" type="submit" name="submit" value="<?= $text_label_save ?>">
     </fieldset>
 </form>
+<?php
+var_dump($fields);
+var_dump($categories);

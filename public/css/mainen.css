@@ -74,6 +74,14 @@ textarea {
     resize: vertical;
 }
 
+.propInput.radio.selected {
+   
+}
+input[type=radio]:checked + label {
+    background-color: #167695;
+    color: #fff;
+}
+
 /* ==========================================================================
    Browser Upgrade Prompt
    ========================================================================== */

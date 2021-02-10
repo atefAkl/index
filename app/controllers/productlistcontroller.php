@@ -5,6 +5,7 @@ use PHPMVC\LIB\Helper;
 use PHPMVC\LIB\InputFilter;
 use PHPMVC\lib\messenger;
 use PHPMVC\Lib\Validate;
+use PHPMVC\Models\FieldsModel;
 use PHPMVC\Models\PrivilegeModel;
 use PHPMVC\Models\ProductCategoryModel;
 use PHPMVC\Models\ProductModel;
@@ -34,6 +35,7 @@ class ProductListController extends AbstractController
         $this->language->load('productlist.default');
 
         $this->_data['products'] = ProductModel::getAll();
+        $this->_data['additionalHeaderCss'] = '';
 
         $this->_view();
     }
@@ -46,6 +48,8 @@ class ProductListController extends AbstractController
         $this->language->load('productlist.messages');
         $this->language->load('productlist.units');
         $this->language->load('validation.errors');
+        $this->_data['additionalHeaderCss'] = '';
+        $this->_data['fields'] = FieldsModel::get('SELECT app_fields.FieldId, app_fields.FieldName FROM app_fields');
 
         $this->_data['categories'] = ProductCategoryModel::getAll();
 

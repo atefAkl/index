@@ -31,9 +31,8 @@ class ProductModel extends AbstractModel
 
     public static function getAll()
     {
-        $sql = 'SELECT apl.*, apc.Name categoryName FROM ' . self::$tableName . ' apl';
-        $sql .= ' INNER JOIN ' . ProductCategoryModel::getModelTableName() . ' apc';
-        $sql .= ' ON apc.CategoryId = apl.CategoryId';
+        $sql = $sql = 'SELECT *, (SELECT CategoryName FROM app_products_categories WHERE app_products_categories.CategoryId = ' . self::$tableName . '.CategoryId) CategoryName FROM ' . self::$tableName ;
+
         return self::get($sql);
     }
 }
