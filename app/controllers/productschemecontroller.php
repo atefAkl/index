@@ -9,6 +9,7 @@ use PHPMVC\Models\fieldsModel;
 use PHPMVC\Models\ProductCategoryModel;
 use PHPMVC\Models\ProductSchemeModel;
 use PHPMVC\Models\PropsModel;
+use PHPMVC\Models\SchemePropsModel;
 
 class ProductSchemeController extends AbstractController
 {
@@ -18,8 +19,9 @@ class ProductSchemeController extends AbstractController
 
     private $_createActionRoles =
     [
-        'PSId'           => 'req|alphanum|between(3,40)',
-        'PSName'            => 'req|alphanum|max(15)',
+        'PSField'               => 'req|alphanum|between(3,40)',
+        'PSName'                => 'req|alphanum|max(15)',
+
 
     ];
 
@@ -30,7 +32,7 @@ class ProductSchemeController extends AbstractController
 
         $this->_data['additionalHeaderCss'] = '';
         // ps = Product Schemes
-        $this->_data['ps'] = ProductSchemeModel::getAll();
+        $this->_data['ps'] = ProductSchemeModel::get('SELECT PSId, PSName FROM app_product_scheme');
 
         $this->_view();
     }
@@ -46,23 +48,17 @@ class ProductSchemeController extends AbstractController
         $this->_data['additionalHeaderCss'] = '';
         $this->_data['fields'] = fieldsModel::get('SELECT FieldName, FieldId FROM app_fields');
         $this->_data['categories'] = ProductCategoryModel::get('SELECT CategoryName, CategoryId FROM app_products_categories ');
-        $this->_data['props'] = PropsModel::getAll();
 
+        $ps = new ProductSchemeModel();
         if(isset($_POST['submit'])) {
-            var_dump($_POST);
-            /*$client = new ClientModel();
-
-            $client->Name = $this->filterString($_POST['Name']);
-            $client->Email = $this->filterString($_POST['Email']);
-            $client->PhoneNumber = $this->filterString($_POST['PhoneNumber']);
-            $client->Address = $this->filterString($_POST['Address']);*/
-/*
-            if($client->save()) {
-                $this->messenger->add($this->language->get('message_create_success'));
-            } else {
-                $this->messenger->add($this->language->get('message_create_failed'), messenger::APP_MESSAGE_ERROR);
-            }*/
-            //$this->redirect('/clients');
+            if ($_POST['Field'] != '0' && $_POST['Category'] != '0' &&$_POST['PSName'] != '') {
+                $ps->PSName = implode(' | ', [$_POST['Field'], $_POST['Category'], $_POST['PSName']]);
+                if ($ps->save()) {
+                    $this->redirect('/productscheme');
+                } else {
+                    $this->messenger->add('Scheme Not Saved');
+                }
+            }
         }
 
         $this->_view();
@@ -72,33 +68,55 @@ class ProductSchemeController extends AbstractController
     {
 
         $id = $this->filterInt($this->_params[0]);
-        $client = ClientModel::getByPK($id);
+        $ps = ProductSchemeModel::getByPK($id);
 
-        if($client === false) {
-            $this->redirect('/clients');
+        if($ps === false) {
+            $this->redirect('/productscheme');
         }
-
-        $this->_data['client'] = $client;
+        $this->_data['additionalHeaderCss'] = '';
+        $this->_data['scheme'] = $ps;
 
         $this->language->load('template.common');
-        $this->language->load('clients.edit');
-        $this->language->load('clients.labels');
-        $this->language->load('clients.messages');
+        $this->language->load('productscheme.edit');
+        $this->language->load('productscheme.labels');
+        $this->language->load('productscheme.messages');
         $this->language->load('validation.errors');
+        $this->_data['fields'] = fieldsModel::get('SELECT FieldName, FieldId FROM app_fields');
+        $this->_data['categories'] = ProductCategoryModel::get('SELECT CategoryName, CategoryId FROM app_products_categories ');
+        $this->_data['props'] = PropsModel::getAll();
 
-        if(isset($_POST['submit']) && $this->isValid($this->_createActionRoles, $_POST)) {
+        $extractedSchemePropsIds = SchemePropsModel::get('SELECT PropId FROM app_product_scheme_props WHERE SchemeId = ' . $ps->PSId);
+        $schemeProps = [];
+        foreach ($extractedSchemePropsIds as $sp) {
+            $schemeProps[] = $sp->PropId;
+        }
+        $this->_data['schemeProps'] = $schemeProps;
 
-            $client->Name = $this->filterString($_POST['Name']);
-            $client->Email = $this->filterString($_POST['Email']);
-            $client->PhoneNumber = $this->filterString($_POST['PhoneNumber']);
-            $client->Address = $this->filterString($_POST['Address']);
+        if(isset($_POST['submit'])) {
+            $ps->PSName = $this->filterString(implode(' | ', [$_POST['Field'], $_POST['Category'], $_POST['PSName']]));
+            if($ps->save())
+            {
+                if(isset($_POST['Props']) && is_array($_POST['Props'])) {
+                    $propsIdsToBeDeleted = array_diff($schemeProps, $_POST['Props']);
+                    $propsIdsToBeAdded = array_diff($_POST['Props'], $schemeProps);
 
-            if($client->save()) {
-                $this->messenger->add($this->language->get('message_create_success'));
-            } else {
-                $this->messenger->add($this->language->get('message_create_failed'), messenger::APP_MESSAGE_ERROR);
+                    // Delete the unwanted privileges
+                    foreach ($propsIdsToBeDeleted as $deletedProp) {
+                        $unwantedPrivilege = SchemePropsModel::getBy(['SchemeId' => $deletedProp, 'SchemeId' => $ps->PSId]);
+                        $unwantedPrivilege->current()->delete();
+                    }
+
+                    // Add the new privileges
+//privilege = prop ,, group = scheme ,, groupPrivilege = schemeProp
+                    foreach ($propsIdsToBeAdded as $propId) {
+                        $psp = new SchemePropsModel();
+                        $psp->SchemeId = $ps->PSId;
+                        $psp->PropId = $propId;
+                        $psp->save();
+                    }
+                }
+                $this->redirect('/productscheme');
             }
-            $this->redirect('/clients');
         }
 
         $this->_view();
@@ -108,19 +126,19 @@ class ProductSchemeController extends AbstractController
     {
 
         $id = $this->filterInt($this->_params[0]);
-        $client = ClientModel::getByPK($id);
+        $ps = ProductSchemeModel::getByPK($id);
 
-        if($client === false) {
-            $this->redirect('/clients');
+        if($ps === false) {
+            $this->redirect('/productscheme');
         }
 
-        $this->language->load('clients.messages');
+        $this->language->load('validation.messages');
 
-        if($client->delete()) {
+        if($ps->delete()) {
             $this->messenger->add($this->language->get('message_delete_success'));
         } else {
             $this->messenger->add($this->language->get('message_delete_failed'), messenger::APP_MESSAGE_ERROR);
         }
-        $this->redirect('/clients');
+        $this->redirect('/productscheme');
     }
 }

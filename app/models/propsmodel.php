@@ -4,8 +4,9 @@ namespace PHPMVC\Models;
 class PropsModel extends AbstractModel
 {
 
-    public $PSId;
-    public $PSName;
+    public $PXId;
+    public $PXName;
+    public $PXProp;
 
     protected static $tableName = 'app_product_props';
 

@@ -5,7 +5,7 @@ use PHPMVC\LIB\InputFilter;
 use PHPMVC\lib\messenger;
 use PHPMVC\Models\PropsModel;
 use PHPMVC\Models\PrivilegeModel;
-use PHPMVC\Models\UserGroupPrivilegeModel;
+use PHPMVC\Models\SchemePropsModel;
 
 class PropsController extends AbstractController
 {
@@ -36,14 +36,27 @@ class PropsController extends AbstractController
         $this->_data['additionalHeaderCss'] = '';
         if(isset($_POST['submit'])) {
             $prop = new PropsModel();
-            /*$prop->PXId     = '';//$this->filterString($_POST['PrivilegeTitle']);
-            $prop->PXName   = '';//$this->filterString($_POST['Privilege']);
-            $prop->PXProp   = '';//$this->filterString($_POST['Privilege']);
+
+            $prop->PXName       = isset($_POST['PXName']) ? $this->filterString($_POST['PXName']) : '';
+            $propType           = isset($_POST['PXType']) ? $this->filterString($_POST['PXType']) : '';
+            $propValues         = isset($_POST['PXValues']) ? explode(',', $this->filterString($_POST['PXValues'])) : '';
+            $propDefault        = isset($_POST['PXDefault']) ? explode(',', $this->filterString($_POST['PXDefault'])) : '';
+            $propMultiple       = isset($_POST['PXApplyMultiple']) ? $this->filterString($_POST['PXDefault']) : 'off';
+
+            $prop->PXProp = json_encode([
+                'Type'          => $propType,
+                'Values'        => $propValues,
+                'Default'       => $propDefault,
+                'ApplyMultiple' => $propMultiple,
+            ]);
             if($prop->save())
             {
-                $this->messenger->add('تم حفظ الصلاحية بنجاح');
-                $this->redirect('/privileges');
-            }*/
+                $this->messenger->add('تم حفظ الخاصية بنجاح');
+                $this->redirect('/props');
+            }
+
+            var_dump($prop);
+            var_dump(json_decode( '{"Type":"email","Values":[""],"Default":[""],"ApplyMultiple":"off"}'));
         }
 
         $this->_view();
@@ -51,26 +64,37 @@ class PropsController extends AbstractController
 
     public function editAction()
     {
-
+        $this->_data['additionalHeaderCss'] = '';
         $id = $this->filterInt($this->_params[0]);
-        $privilege = PrivilegeModel::getByPK($id);
+        $prop = PropsModel::getByPK($id);
 
-        if($privilege === false) {
-            $this->redirect('/privileges');
-        }
+        /*if($prop === false) {
+            $this->redirect('/props');
+        }*/
 
-        $this->_data['privilege'] = $privilege;
+        $this->_data['prop'] = $prop;
+
 
         $this->language->load('template.common');
-        $this->language->load('privileges.labels');
-        $this->language->load('privileges.edit');
+        $this->language->load('props.labels');
+        $this->language->load('props.edit');
 
         if(isset($_POST['submit'])) {
-            $privilege->PrivilegeTitle = $this->filterString($_POST['PrivilegeTitle']);
-            $privilege->Privilege = $this->filterString($_POST['Privilege']);
-            if($privilege->save())
+            $prop->PXName       = isset($_POST['PXName']) ? $this->filterString($_POST['PXName']) : '';
+            $propType           = isset($_POST['PXType']) ? $this->filterString($_POST['PXType']) : '';
+            $propValues         = isset($_POST['PXValues']) ? explode(',', $this->filterString($_POST['PXValues'])) : '';
+            $propDefault        = isset($_POST['PXDefault']) ? explode(',', $this->filterString($_POST['PXDefault'])) : '';
+            $propMultiple       = isset($_POST['PXApplyMultiple']) ? $this->filterString($_POST['PXApplyMultiple']) : 'off';
+
+            $prop->PXProp = json_encode([
+                'Type'          => $propType,
+                'Values'        => $propValues,
+                'Default'       => $propDefault,
+                'ApplyMultiple' => $propMultiple,
+            ]);
+            if($prop->save())
             {
-                $this->redirect('/privileges');
+                $this->redirect('/props');
             }
         }
 
@@ -81,22 +105,22 @@ class PropsController extends AbstractController
     {
 
         $id = $this->filterInt($this->_params[0]);
-        $privilege = PrivilegeModel::getByPK($id);
+        $prop = PropsModel::getByPK($id);
 
-        if($privilege === false) {
-            $this->redirect('/privileges');
+        if($prop=== false) {
+            $this->redirect('/props');
         }
 
-        $groupPrivileges = UserGroupPrivilegeModel::getBy(['PrivilegeId' => $privilege->PrivilegeId]);
-        if(false !== $groupPrivileges) {
-            foreach ($groupPrivileges as $groupPrivilege) {
-                $groupPrivilege->delete();
+        $schemeProps = SchemePropsModel::getBy(['PXId' => $prop->PXId]);
+        if(false !== $schemeProps) {
+            foreach ($schemeProps as $schemeProp) {
+                $schemeProp->delete();
             }
         }
 
-        if($privilege->delete())
+        if($prop->delete())
         {
-            $this->redirect('/privileges');
+            $this->redirect('/props');
         }
     }
 

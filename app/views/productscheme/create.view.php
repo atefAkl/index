@@ -10,7 +10,7 @@
                     <?php
                     if ($fields != false) {
                         foreach ($fields as $field) { ?>
-                            <option value="<?= $field->FieldId; ?>"><?= $field->FieldName;?></option>
+                            <option value="<?= $field->FieldName; ?>"><?= $field->FieldName;?></option>
                         <?php   }
                     } ?>
                 </select>
@@ -23,7 +23,7 @@
                     <?php
                     if ($categories != false) {
                         foreach ($categories as $cat) { ?>
-                            <option value="<?= $cat->CategoryId; ?>"><?= $cat->CategoryName;?></option>
+                            <option value="<?= $cat->CategoryName; ?>"><?= $cat->CategoryName;?></option>
                         <?php   }
                     } ?>
                 </select>
@@ -34,26 +34,14 @@
                 <input required type="text" name="PSName" maxlength="40" value="<?= $this->showValue('Name') ?>">
             </div>
 
-            <div class="input_wrapper_other n50 padding select">
-                <label class="block"><b><?= $text_label_PSProps ?></b></label>
-                <select name="PXProp" id="PXProp">
-                    <option value="0">No Properties Selected Yet</option>
-                    <?php
-                    if ($props != false) {
-                        foreach ($props as $prop) { ?>
-                            <option value="<?= $prop->PXId; ?>"><?= $prop->PXName;?></option>
-                        <?php   }
-                    } ?>
-                </select>
-            </div>
 
             <input class="no_float" type="submit" name="submit" value="<?= $text_label_save ?>">
         </fieldset>
     </form>
+<?php var_dump($_POST); ?>
+
 </div>
 
 
 
 
-<?php
-var_dump($fields);

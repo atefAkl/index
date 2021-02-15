@@ -77,10 +77,11 @@ textarea {
 .propInput.radio.selected {
    
 }
-input[type=radio]:checked + label {
+input[type=radio]:checked + label, input[type=checkbox]:checked + label {
     background-color: #167695;
     color: #fff;
 }
+
 
 /* ==========================================================================
    Browser Upgrade Prompt
@@ -387,7 +388,8 @@ div.wrapper nav.main_navigation ul.app_navigation li.submenu ul {
     background-color: #222;
     padding: 10px 0;
     border-left: solid 5px transparent;
-    display: none;
+    height: 0;
+    height: 0;
 }
 
 div.wrapper nav.main_navigation ul.app_navigation li.submenu:hover ul,

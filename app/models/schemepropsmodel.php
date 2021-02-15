@@ -7,19 +7,22 @@ class SchemePropsModel extends AbstractModel
     public $PSPId;
     public $PropId;
     public $SchemeId;
+    public $PropType;
 
     protected static $tableName = 'app_product_scheme_props';
 
     protected static $tableSchema = array(
         'PSPId'                 => self::DATA_TYPE_INT,
         'PropId'                => self::DATA_TYPE_INT,
-        'SchemeId'              => self::DATA_TYPE_INT
+        'SchemeId'              => self::DATA_TYPE_INT,
+        'PropType'              => self::DATA_TYPE_INT,
+
     );
 
-    protected static $primaryKey = '$PSPId';
+    protected static $primaryKey = 'PSPId';
 
-    public static function getSchemeProps(PSchemeModel $pScheme) {
-        $schemeProps = self::getBy(['GroupId' => $pScheme->PSId]);
+    public static function getSchemeProps(ProductSchemeModel $pScheme) {
+        $schemeProps = self::getBy(['PSPId' => $pScheme->PSId]);
         $extractedPropsIds = [];
         if(false !== $schemeProps) {
             foreach ($schemeProps as $prop) {

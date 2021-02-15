@@ -1,5 +1,5 @@
-<?php if (isset($this->session->u->Username)) { ?>
-<nav class="main_navigation <?= (isset($_COOKIE['menu_opened']) && $_COOKIE['menu_opened'] == 'true') ? 'opened no_animation' : '' ?>">
+
+<nav class="main_navigation <?= (isset($_COOKIE['menu_opened']) && $_COOKIE['menu_opened'] == 'false') ? 'opened no_animation' : '' ?>">
     <div class="employee_info">
         <div class="profile_picture">
             <img src="/img/user.png" alt="User Profile Picture">
@@ -31,6 +31,15 @@
                 <li><a href="/productlist"><i class="fa fa-tag"></i> <?= $text_store_products ?></a></li>
             </ul>
         </li>
+        <li class="submenu">
+            <a href=""><i class="material-icons">store</i> Products</a>
+            <ul>
+                <li><a href="/products"><i class="fa fa-archive"></i> <?= $text_store_categories ?></a></li>
+                <li><a href="/product/create"><i class="fa fa-tag"></i>New Product</a></li>
+                <li><a href="/productscheme"><i class="fa fa-tag"></i>ProductScheme</a></li>
+                <li><a href="/props"><i class="fa fa-tag"></i>Props</a></li>
+            </ul>
+        </li>
         <li><a href="/clients"><i class="material-icons">contacts</i> <?= $text_clients ?></a></li>
         <li class="<?= $this->matchUrl('/suppliers') === true ? ' selected' : '' ?>"><a href="/suppliers"><i class="material-icons">group</i> <?= $text_suppliers ?></a></li>
         <li class="submenu">
@@ -46,7 +55,7 @@
         <li><a href="/auth/logout"><i class="fa fa-sign-out"></i> <?= $text_log_out ?></a></li>
     </ul>
 </nav>
-<?php } ?>
+
 <div class="action_view <?= (isset($_COOKIE['menu_opened']) && $_COOKIE['menu_opened'] == 'true') ? 'collapsed no_animation' : '' ?>">
 <?php $messages = $this->messenger->getMessages(); if(!empty($messages)): foreach ($messages as $message): ?>
 <p class="message t<?= $message[1] ?>"><?= $message[0] ?><a href="" class="closeBtn"><i class="fa fa-times"></i></a></p>
